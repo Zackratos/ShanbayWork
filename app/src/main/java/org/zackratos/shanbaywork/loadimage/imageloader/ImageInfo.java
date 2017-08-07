@@ -1,4 +1,5 @@
-package org.zackratos.shanbaywork.loadimage;
+package org.zackratos.shanbaywork.loadimage.imageloader;
+
 
 /**
  * Created by Administrator on 2017/8/7.
@@ -9,6 +10,7 @@ public class ImageInfo {
     private String name;
 
     private String url;
+
 
     public ImageInfo(String name, String url) {
         this.name = name;
