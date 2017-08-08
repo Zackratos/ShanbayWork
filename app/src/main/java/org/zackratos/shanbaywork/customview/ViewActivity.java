@@ -12,6 +12,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.util.Log;
@@ -81,6 +82,8 @@ public class ViewActivity extends AppCompatActivity {
                 spannableString.setSpan(new ClickableSpan() {
                     @Override
                     public void onClick(View widget) {
+                        QueryWordDialog dialog = QueryWordDialog.newInstance("hello");
+                        dialog.show(getSupportFragmentManager(), "tag");
 
                     }
                 }, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -94,9 +97,6 @@ public class ViewActivity extends AppCompatActivity {
 
 
 
-        QueryWordDialog dialog = QueryWordDialog.newInstance("hello");
-        dialog.show(getSupportFragmentManager(), "TAG");
-
 
     }
 
@@ -104,6 +104,7 @@ public class ViewActivity extends AppCompatActivity {
 
     private TextView newTextView(SpannableString spannableString) {
         TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.item_paragraph, container, false);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
         tv.setText(spannableString);
         return tv;
     }

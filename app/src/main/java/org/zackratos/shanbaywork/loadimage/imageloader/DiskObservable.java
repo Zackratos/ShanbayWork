@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * Created by Administrator on 2017/8/7.
@@ -17,20 +20,77 @@ public class DiskObservable extends CacheObservable {
 
     private static final String TAG = "DiskObservable";
 
+    private static final String IMAGE = "image";
+
     public DiskObservable(Context context) {
         this.context = context;
     }
 
     @Override
-    public Image getImageFromCache(ImageInfo imageInfo) {
-
+    public ImageInfo getImageFromCache(String imageName) {
         Log.d(TAG, "getImageFromCache: ");
-        String name = imageInfo.getName();
-        File path = context.getExternalFilesDir("images");
+        File path = createFolder();
+
+        if (path == null) {
+            return new ImageInfo(imageName, null);
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeFile(path.getAbsolutePath() + "/" + imageName);
+
+        return new ImageInfo(imageName, bitmap);
+    }
+
+
+    @Override
+    public void putImageToCache(ImageInfo imageInfo) {
+        File path = createFolder();
+        if (path == null || imageInfo.getBitmap() == null) {
+            return;
+        }
+
+        saveBitmap(path, imageInfo);
+
+
+    }
+
+
+
+    private void saveBitmap(File path, ImageInfo imageInfo) {
+        File file = new File(path, imageInfo.getName());
+        if (file.exists()) {
+            file.delete();
+        }
+
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(file);
+            imageInfo.getBitmap().compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                outputStream.flush();
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+
+
+
+
+    private File createFolder() {
+        File path = context.getExternalFilesDir(IMAGE);
         if (path == null) {
             return null;
         }
-        
+
         if (!path.exists()) {
             path.mkdir();
         } else {
@@ -39,19 +99,9 @@ public class DiskObservable extends CacheObservable {
                 path.mkdir();
             }
         }
-        Log.d(TAG, "getImageFromCache: " + path.getAbsolutePath() + "/" + name);
-        Bitmap bitmap = BitmapFactory.decodeFile(path.getAbsolutePath() + "/" + name);
-        
-        return new Image(imageInfo, bitmap);
+
+        return path;
     }
-
-
-
-    @Override
-    public void putImageToCache(Image image) {
-
-    }
-
 
 
 

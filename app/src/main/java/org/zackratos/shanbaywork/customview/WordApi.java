@@ -10,7 +10,7 @@ import retrofit2.http.Query;
 
 public interface WordApi {
 
-    public static final String URL = "https://api.shanbay.com/";
+    public static final String BASE_URL = "https://api.shanbay.com/";
 
 
 

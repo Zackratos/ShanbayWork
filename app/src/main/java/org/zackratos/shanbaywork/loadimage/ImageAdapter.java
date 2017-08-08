@@ -24,11 +24,11 @@ import io.reactivex.schedulers.Schedulers;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
     private Context context;
-    private ImageInfo[] imageInfos;
+    private String[] images;
 
-    public ImageAdapter(Context contexts, ImageInfo[] imageInfos) {
+    public ImageAdapter(Context contexts, String[] images) {
         this.context = contexts;
-        this.imageInfos = imageInfos;
+        this.images = images;
     }
 
 
@@ -41,10 +41,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        Observable.just(imageInfos[position])
-                .subscribeOn(Schedulers.io());
+
+
         RxImageLoader.with(context)
-                .load(imageInfos[position])
+                .load(images[position])
+                .error(R.drawable.image_default)
                 .into((ImageView) holder.itemView);
 
 /*        Glide.with(context)
@@ -58,7 +59,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
     @Override
     public int getItemCount() {
-        return imageInfos.length;
+        return images.length;
     }
 
 

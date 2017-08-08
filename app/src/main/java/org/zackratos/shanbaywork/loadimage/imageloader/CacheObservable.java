@@ -1,8 +1,6 @@
 package org.zackratos.shanbaywork.loadimage.imageloader;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 
@@ -13,24 +11,23 @@ import io.reactivex.functions.Function;
 public abstract class CacheObservable {
 
 
-    public Observable<Image> getImage(ImageInfo imageInfo) {
+    public Observable<ImageInfo> getImage(String imageName) {
 
 
-        return Observable.just(imageInfo)
-                .map(new Function<ImageInfo, Image>() {
+        return Observable.just(imageName)
+                .map(new Function<String, ImageInfo>() {
                     @Override
-                    public Image apply(@NonNull ImageInfo imageInfo) throws Exception {
-
-                        return getImageFromCache(imageInfo);
+                    public ImageInfo apply(@NonNull String s) throws Exception {
+                        return getImageFromCache(s);
                     }
                 });
     }
 
 
 
-    public abstract Image getImageFromCache(ImageInfo imageInfo);
+    public abstract ImageInfo getImageFromCache(String imageName);
 
-    public abstract void putImageToCache(Image image);
+    public abstract void putImageToCache(ImageInfo image);
 
 
 

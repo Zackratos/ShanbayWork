@@ -1,6 +1,8 @@
 package org.zackratos.shanbaywork.loadimage.imageloader;
 
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Administrator on 2017/8/7.
  */
@@ -9,12 +11,13 @@ public class ImageInfo {
 
     private String name;
 
-    private String url;
+//    private String url;
+    private Bitmap bitmap;
 
 
-    public ImageInfo(String name, String url) {
+    public ImageInfo(String name, Bitmap bitmap) {
         this.name = name;
-        this.url = url;
+        this.bitmap = bitmap;
     }
 
     public String getName() {
@@ -25,11 +28,11 @@ public class ImageInfo {
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }

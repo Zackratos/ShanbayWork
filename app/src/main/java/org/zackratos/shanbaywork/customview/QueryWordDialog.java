@@ -11,12 +11,14 @@ import android.widget.TextView;
 
 import org.zackratos.shanbaywork.BottomDialog;
 import org.zackratos.shanbaywork.R;
+import org.zackratos.shanbaywork.RetrofitManager;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
 
 /**
  * Created by Administrator on 2017/8/7.
@@ -82,8 +84,7 @@ public class QueryWordDialog extends BottomDialog {
 
     private void showWordInfo() {
 
-        RetrofitManager.getRetrofit()
-                .create(WordApi.class)
+        RetrofitManager.getWordRetrofit().create(WordApi.class)
                 .rxQueryWord(word)
                 .subscribeOn(Schedulers.io())
                 .filter(new Predicate<WordInfo>() {
