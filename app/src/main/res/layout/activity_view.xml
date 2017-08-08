@@ -7,11 +7,20 @@
     android:layout_height="match_parent"
     tools:context="org.zackratos.shanbaywork.customview.ViewActivity">
 
-    <TextView
-        android:id="@+id/text_view"
+    <LinearLayout
+        android:id="@+id/paragraphContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>
+
+<!--    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>-->
+
 
 
 </ScrollView>
