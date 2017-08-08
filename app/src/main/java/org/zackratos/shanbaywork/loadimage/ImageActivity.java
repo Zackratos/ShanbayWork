@@ -6,10 +6,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 
 import org.zackratos.shanbaywork.R;
+import org.zackratos.shanbaywork.loadimage.imageloader.ImageInfo;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 
 public class ImageActivity extends AppCompatActivity {
+
+    private static final String TAG = "ImageActivity";
+
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, ImageActivity.class);
@@ -39,6 +51,7 @@ public class ImageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image);
 
@@ -59,6 +72,51 @@ public class ImageActivity extends AppCompatActivity {
 
 
         rv.setAdapter(new ImageAdapter(this, imageInfos));
+
+
+        Observable<String> observable1 = Observable.just("1111");
+
+        Observable<String> observable2 = Observable.just("2222");
+
+        Observable<String> observable3 = Observable.just("3333");
+
+
+
+        Observable.concat(observable1, observable2, observable3)
+                .filter(new Predicate<String>() {
+                    @Override
+                    public boolean test(@NonNull String s) throws Exception {
+                        return !TextUtils.isEmpty(s);
+                    }
+                })
+                .subscribe(new Observer<String>() {
+
+                    Disposable d;
+
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        this.d = d;
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String s) {
+                        Log.d(TAG, "onNext: " + s);
+                        if (!d.isDisposed()) {
+                            d.dispose();
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
 
     }
 
