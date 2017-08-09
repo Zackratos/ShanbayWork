@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import org.zackratos.shanbaywork.customview.ViewActivity;
+import org.zackratos.shanbaywork.customcontrols.ControlsActivity;
 import org.zackratos.shanbaywork.loadimage.ImageActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void customView(View view) {
-        enter(ViewActivity.newIntent(this));
+        enter(ControlsActivity.newIntent(this));
     }
 
 

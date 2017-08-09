@@ -1,11 +1,11 @@
-package org.zackratos.shanbaywork.customview;
+package org.zackratos.shanbaywork.customcontrols;
 
-import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +14,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.zackratos.shanbaywork.R;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -43,8 +39,10 @@ public class ParagraphAdapter extends RecyclerView.Adapter<ParagraphAdapter.Para
 
 //    private SpannableString spannableString;
 
-    public ParagraphAdapter(String[] paragraphs) {
+    private AppCompatActivity activity;
 
+    public ParagraphAdapter(AppCompatActivity activity, String[] paragraphs) {
+        this.activity = activity;
         this.paragraphs = paragraphs;
     }
 
@@ -97,17 +95,11 @@ public class ParagraphAdapter extends RecyclerView.Adapter<ParagraphAdapter.Para
 
 
         Observable.just(paragraph)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.newThread())
                 .flatMap(new Function<String, ObservableSource<String>>() {
                     @Override
                     public ObservableSource<String> apply(@NonNull String s) throws Exception {
                         return Observable.fromArray(s.split(" "));
-                    }
-                })
-                .doOnNext(new Consumer<String>() {
-                    @Override
-                    public void accept(@NonNull String s) throws Exception {
-
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -118,6 +110,18 @@ public class ParagraphAdapter extends RecyclerView.Adapter<ParagraphAdapter.Para
                         spannableString.setSpan(new ClickableSpan() {
                             @Override
                             public void onClick(View widget) {
+                                TextView tv = (TextView) widget;
+                                String s = tv
+                                        .getText()
+                                        .subSequence(tv.getSelectionStart(),
+                                                tv.getSelectionEnd()).toString();
+                                QueryWordDialog dialog = QueryWordDialog.newInstance(s);
+                                dialog.show(activity.getSupportFragmentManager(), "tag");
+
+                            }
+
+                            @Override
+                            public void updateDrawState(TextPaint ds) {
 
                             }
                         }, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -132,6 +136,7 @@ public class ParagraphAdapter extends RecyclerView.Adapter<ParagraphAdapter.Para
                     @Override
                     public void run() throws Exception {
                         ((TextView) holder.itemView).setText(spannableString);
+                        ((TextView) holder.itemView).setMovementMethod(LinkMovementMethod.getInstance());
                         start = 0;
                         end = 0;
                     }

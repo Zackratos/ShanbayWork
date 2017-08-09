@@ -5,17 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.zackratos.shanbaywork.customview.ViewActivity">
+    android:scrollbars="none"
+    tools:context="org.zackratos.shanbaywork.customcontrols.ControlsActivity">
 
-    <LinearLayout
-        android:id="@+id/paragraphContainer"
+    <TextView
+        android:id="@+id/text_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:padding="10dp"/>
 
 <!--    <LinearLayout
-        android:id="@+id/linear_layout"
+        android:id="@+id/paragraphContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -24,3 +24,17 @@
 
 
 </ScrollView>
+
+
+<!--
+<android.support.v7.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.zackratos.shanbaywork.customview.ControlsActivity">
+
+
+</android.support.v7.widget.RecyclerView>-->

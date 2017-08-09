@@ -1,120 +1,101 @@
-package org.zackratos.shanbaywork.customview;
+package org.zackratos.shanbaywork.customcontrols;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.zackratos.shanbaywork.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
-
-public class ViewActivity extends AppCompatActivity {
+public class ControlsActivity extends AppCompatActivity {
 
 
-    private static final String TAG = "ViewActivity";
+    private static final String TAG = "ControlsActivity";
 
     public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, ViewActivity.class);
+        Intent intent = new Intent(context, ControlsActivity.class);
         return intent;
     }
 
-    private int start;
-    private int end;
-
-    private LinearLayout container;
-
-//    private TextView tv;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
-//        container = (LinearLayout) findViewById(R.id.linear_layout);
-/*
-        tv = (TextView) findViewById(R.id.text_view);
+
+        showByTextView();
+/*        String text = getString(R.string.text);
+
+        RecyclerView rv = (RecyclerView) findViewById(R.id.recycler_view);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        rv.setAdapter(new ParagraphAdapter(this, text.split("\n\n")));*/
+
+
+    }
+
+
+
+
+
+    private void showByTextView() {
+
+
+        String text = getString(R.string.text);
+        SpannableString spannableString = new SpannableString(text);
+        final TextView tv = (TextView) findViewById(R.id.text_view);
         tv.setMovementMethod(LinkMovementMethod.getInstance());
-        String text = getString(R.string.text);
 
-
-
-        tv.setText(text, TextView.BufferType.SPANNABLE);
-        getEachWord(tv);*/
-        String text = getString(R.string.text);
-
-        container = (LinearLayout) findViewById(R.id.paragraphContainer);
+        int start = 0;
+        int end = 0;
 
         for (String paragraph : text.split("\n\n")) {
-            SpannableString spannableString = new SpannableString(paragraph);
 
-            start = 0;
-            end = 0;
+            for (final String word : paragraph.split(" ")) {
 
-            for (String word : paragraph.split(" ")) {
                 end = start + word.length();
+
                 spannableString.setSpan(new ClickableSpan() {
                     @Override
                     public void onClick(View widget) {
-                        QueryWordDialog dialog = QueryWordDialog.newInstance("hello");
+                        tv.getText()
+                                .subSequence(tv.getSelectionStart(),
+                                        tv.getSelectionEnd());
+
+                        QueryWordDialog dialog = QueryWordDialog.newInstance(word
+                                .replaceAll("\\.", "").replaceAll(",", "")
+                                .replaceAll("\\[", "").replaceAll("]", "")
+                                .replaceAll("''", ""));
                         dialog.show(getSupportFragmentManager(), "tag");
+                    }
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
 
                     }
                 }, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 start = end + 1;
             }
 
-            container.addView(newTextView(spannableString));
-
-
+            start = end + 2;
         }
 
-
-
-
-    }
-
-
-
-    private TextView newTextView(SpannableString spannableString) {
-        TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.item_paragraph, container, false);
-        tv.setMovementMethod(LinkMovementMethod.getInstance());
         tv.setText(spannableString);
-        return tv;
+
+
     }
 
 
 
 
 
-
-    public void getEachWord(TextView textView){
+/*    public void getEachWord(TextView textView){
         Spannable spans = (Spannable)textView.getText();
         Integer[] indices = getIndices(
                 textView.getText().toString().trim(), ' ');
@@ -161,23 +142,63 @@ public class ViewActivity extends AppCompatActivity {
             pos = s.indexOf(c, pos + 1);
         }
         return (Integer[]) indices.toArray(new Integer[0]);
-    }
+    }*/
+
+
+
+    /*    private void showByLinearLayout() {
+
+        container = (LinearLayout) findViewById(R.id.paragraphContainer);
+
+        for (String paragraph : text.split("\n\n")) {
+            SpannableString spannableString = new SpannableString(paragraph);
+
+            start = 0;
+            end = 0;
+
+            for (String word : paragraph.split(" ")) {
+
+                end = start + word.length();
+                spannableString.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(View widget) {
+
+                        TextView tv = (TextView) widget;
+                        String s = tv
+                                .getText()
+                                .subSequence(tv.getSelectionStart(),
+                                        tv.getSelectionEnd()).toString();
+                        QueryWordDialog dialog = QueryWordDialog.newInstance(s);
+                        dialog.show(getSupportFragmentManager(), "tag");
+
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+
+
+                    }
+                }, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                start = end + 1;
+            }
+
+            container.addView(newTextView(spannableString));
+        }
+    }*/
+
+
+/*    private TextView newTextView(SpannableString spannableString) {
+        TextView tv = (TextView) LayoutInflater.from(this).inflate(R.layout.item_paragraph, container, false);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+        tv.setText(spannableString);
+        return tv;
+    }*/
 
 
 
 
-    private void clickWord2(String text) {
 
-
-
-    }
-
-
-
-
-
-
-    private void clickWord(String text) {
+/*    private void clickWord(String text) {
         final SpannableString spannableString = new SpannableString(text);
         final BackgroundColorSpan colorSpan = new BackgroundColorSpan(Color.parseColor("#AC00FF30"));
 
@@ -201,7 +222,7 @@ public class ViewActivity extends AppCompatActivity {
                         return !TextUtils.isEmpty(s);
                     }
                 })
-/*                .map(new Function<String, String>() {
+*//*                .map(new Function<String, String>() {
                     @Override
                     public String apply(@NonNull String s) throws Exception {
                         return s.replaceAll(",", "")
@@ -210,7 +231,7 @@ public class ViewActivity extends AppCompatActivity {
                                 .replaceAll("\\[", "")
                                 .replaceAll("]", "");
                     }
-                })*/
+                })*//*
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(@NonNull String s) throws Exception {
@@ -226,7 +247,7 @@ public class ViewActivity extends AppCompatActivity {
                     public void run() throws Exception {
                     }
                 });
-    }
+    }*/
 
 
 

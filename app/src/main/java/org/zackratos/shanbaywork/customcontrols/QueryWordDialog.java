@@ -1,5 +1,6 @@
-package org.zackratos.shanbaywork.customview;
+package org.zackratos.shanbaywork.customcontrols;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -13,12 +14,15 @@ import org.zackratos.shanbaywork.BottomDialog;
 import org.zackratos.shanbaywork.R;
 import org.zackratos.shanbaywork.RetrofitManager;
 
+import java.io.IOException;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
 
 /**
  * Created by Administrator on 2017/8/7.
@@ -41,17 +45,20 @@ public class QueryWordDialog extends BottomDialog {
 
     private String word;
 
+    private MediaPlayer mediaPlayer;
+
+    private String audioUrl;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         word = getArguments().getString(WORD);
 
-
-
     }
 
 
+    private TextView msgView;
 
     private TextView contentView;
 
@@ -62,15 +69,31 @@ public class QueryWordDialog extends BottomDialog {
     private ImageButton audioButton;
 
 
+
+
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
 
         View view = inflater.inflate(R.layout.dialog_query_word, container, false);
 
+        msgView = findView(view, R.id.word_msg);
         contentView = findView(view, R.id.word_content);
         pronunciationView = findView(view, R.id.word_pronunciation);
         definitionView = findView(view, R.id.word_definition);
         audioButton = findView(view, R.id.word_audio);
+        audioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playAudio();
+            }
+        });
+
+        findView(view, R.id.word_close).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         showWordInfo();
         return view;
     }
@@ -82,45 +105,74 @@ public class QueryWordDialog extends BottomDialog {
 
 
 
+
+    private void playAudio() {
+
+        if (audioUrl == null) {
+            return;
+        }
+
+        try {
+            if (mediaPlayer == null) {
+                mediaPlayer = new MediaPlayer();
+                mediaPlayer.setDataSource(audioUrl);
+                mediaPlayer.prepare();
+            }
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
     private void showWordInfo() {
 
         RetrofitManager.getWordRetrofit().create(WordApi.class)
                 .rxQueryWord(word)
                 .subscribeOn(Schedulers.io())
-                .filter(new Predicate<WordInfo>() {
+                .flatMap(new Function<WordInfo, ObservableSource<WordInfo.Data>>() {
                     @Override
-                    public boolean test(@NonNull WordInfo wordInfo) throws Exception {
-                        return "SUCCESS".equals(wordInfo.getMsg());
+                    public ObservableSource<WordInfo.Data> apply(@NonNull WordInfo wordInfo) throws Exception {
+
+                        if ("SUCCESS".equals(wordInfo.getMsg())) {
+                            return Observable.just(wordInfo.getData());
+                        }
+                        return Observable.error(new Throwable(wordInfo.getMsg()));
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<WordInfo>() {
+                .subscribe(new Consumer<WordInfo.Data>() {
                     @Override
-                    public void accept(@NonNull WordInfo wordInfo) throws Exception {
-                        WordInfo.Data data = wordInfo.getData();
+                    public void accept(@NonNull WordInfo.Data data) throws Exception {
                         contentView.setText(data.getContent());
-                        pronunciationView.setText(data.getPronunciation());
+                        pronunciationView.setText(String.format("/%s/", data.getPronunciation()));
                         definitionView.setText(data.getDefinition());
-                        audioButton.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                            }
-                        });
+                        audioButton.setImageResource(R.drawable.ic_volume_up_black_24dp);
+                        audioUrl = data.getAudio();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(@NonNull Throwable throwable) throws Exception {
-
+                        msgView.setText(throwable.getMessage());
                     }
                 });
     }
 
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
 
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
 
-
-
-
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 }

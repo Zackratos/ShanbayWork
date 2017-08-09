@@ -1,39 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:padding="20dp">
+    android:background="@android:color/white">
 
-    <TextView
-        android:id="@+id/word_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/word_pronunciation"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/word_close"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:scaleType="center"
+        android:tint="@android:color/black"
+        android:src="@android:drawable/arrow_down_float" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/word_content"
-        android:layout_marginLeft="20dp"/>
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/word_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
 
 
-    <ImageButton
-        android:id="@+id/word_audio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_volume_up_black_24dp"
-        android:layout_alignParentRight="true"/>
+        <TextView
+            android:id="@+id/word_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/word_pronunciation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/word_content"
+            android:layout_marginLeft="20dp"/>
 
 
-    <TextView
-        android:id="@+id/word_definition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/word_content"/>
+        <ImageButton
+            android:id="@+id/word_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"/>
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/word_definition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/word_content"/>
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>

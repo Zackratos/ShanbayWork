@@ -1,6 +1,6 @@
 package org.zackratos.shanbaywork;
 
-import org.zackratos.shanbaywork.customview.WordApi;
+import org.zackratos.shanbaywork.customcontrols.WordApi;
 import org.zackratos.shanbaywork.loadimage.imageloader.ImageApi;
 
 import retrofit2.Retrofit;

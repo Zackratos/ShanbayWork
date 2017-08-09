@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".customview.ViewActivity" />
+        <activity android:name=".customcontrols.ControlsActivity" />
         <activity android:name=".loadimage.ImageActivity"/>
     </application>
 
