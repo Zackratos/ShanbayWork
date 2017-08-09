@@ -14,10 +14,17 @@ public class ImageInfo {
 //    private String url;
     private Bitmap bitmap;
 
+    private byte[] bytes;
+
 
     public ImageInfo(String name, Bitmap bitmap) {
         this.name = name;
         this.bitmap = bitmap;
+    }
+
+    public ImageInfo(String name, byte[] bytes) {
+        this.name = name;
+        this.bytes = bytes;
     }
 
     public String getName() {
@@ -34,5 +41,13 @@ public class ImageInfo {
 
     public void setBitmap(Bitmap bitmap) {
         this.bitmap = bitmap;
+    }
+
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 }

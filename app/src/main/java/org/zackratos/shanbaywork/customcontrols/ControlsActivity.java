@@ -1,8 +1,8 @@
 package org.zackratos.shanbaywork.customcontrols;
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -14,22 +14,18 @@ import android.widget.TextView;
 
 import org.zackratos.shanbaywork.R;
 
-public class ControlsActivity extends AppCompatActivity {
+public abstract class ControlsActivity extends AppCompatActivity {
 
 
     private static final String TAG = "ControlsActivity";
 
-    public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, ControlsActivity.class);
-        return intent;
-    }
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view);
+        setContentView(createContentView());
 
         showByTextView();
 /*        String text = getString(R.string.text);
@@ -69,11 +65,7 @@ public class ControlsActivity extends AppCompatActivity {
                                 .subSequence(tv.getSelectionStart(),
                                         tv.getSelectionEnd());
 
-                        QueryWordDialog dialog = QueryWordDialog.newInstance(word
-                                .replaceAll("\\.", "").replaceAll(",", "")
-                                .replaceAll("\\[", "").replaceAll("]", "")
-                                .replaceAll("''", ""));
-                        dialog.show(getSupportFragmentManager(), "tag");
+                        showQueryWord(word);
                     }
                     @Override
                     public void updateDrawState(TextPaint ds) {
@@ -92,6 +84,10 @@ public class ControlsActivity extends AppCompatActivity {
     }
 
 
+    @LayoutRes
+    protected abstract int createContentView();
+
+    protected abstract void showQueryWord(String word);
 
 
 

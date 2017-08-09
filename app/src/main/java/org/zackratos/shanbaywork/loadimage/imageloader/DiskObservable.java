@@ -32,10 +32,11 @@ public class DiskObservable extends CacheObservable {
         File path = createFolder();
 
         if (path == null) {
-            return new ImageInfo(imageName, null);
+            return new ImageInfo(imageName, (Bitmap) null);
         }
 
-        Bitmap bitmap = BitmapFactory.decodeFile(path.getAbsolutePath() + "/" + imageName);
+//        Bitmap bitmap = BitmapFactory.decodeFile(path.getAbsolutePath() + "/" + imageName);
+        Bitmap bitmap = BitmapTools.zoomBitmap(path.getAbsolutePath() + "/" + imageName);
 
         return new ImageInfo(imageName, bitmap);
     }

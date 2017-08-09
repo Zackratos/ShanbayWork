@@ -3,6 +3,7 @@ package org.zackratos.shanbaywork.loadimage.imageloader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.DrawableRes;
+import android.util.Log;
 import android.widget.ImageView;
 
 import io.reactivex.Observable;
@@ -10,6 +11,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
@@ -25,9 +27,10 @@ public class RxImageLoader {
 
     private CacheCreator cacheCreator;
 
+
     private RxImageLoader(Context context) {
         //使用 ApplicationContext 防止内存泄漏
-        this.context = context.getApplicationContext();
+        this.context = context;
 
         cacheCreator = new CacheCreator(context);
     }
@@ -48,6 +51,7 @@ public class RxImageLoader {
                 }
             }
         }*/
+
 
         return new RxImageLoader(context);
 
@@ -73,15 +77,16 @@ public class RxImageLoader {
 
 
 
-    private Disposable disposable;
 
 
     private static final String TAG = "RxImageLoader";
 
 
+    private boolean reponse;
+
 
     public void into(final ImageView imageView) {
-
+        reponse = true;
         Observable.concat(cacheCreator.getImageFromDisk(imageName),
                 cacheCreator.getImageFromNetwork(imageName, errorImage))
                 .subscribeOn(Schedulers.io())
@@ -91,9 +96,9 @@ public class RxImageLoader {
                         return imageInfo.getBitmap() != null;
                     }
                 })
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ImageInfo>() {
+                    Disposable disposable;
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
                         disposable = d;
@@ -101,16 +106,22 @@ public class RxImageLoader {
 
                     @Override
                     public void onNext(@NonNull ImageInfo imageInfo) {
+                        if (!reponse) {
+                            return;
+                        }
+                        Log.d(TAG, "onNext: " + imageInfo.getName());
                         Bitmap bitmap = imageInfo.getBitmap();
                         if (imageView != null) {
                             imageView.setImageBitmap(bitmap);
                         }
-                        dispose();
+                        disposable.dispose();
+                        reponse = false;
+
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-
+                        Log.d(TAG, "onError: " + e.getMessage());
                     }
 
                     @Override
@@ -127,22 +138,27 @@ public class RxImageLoader {
 
 
 
-    public void dispose() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-    }
+
+
 
 
 
 
 /*    public static class Builder {
 
+        private Context context;
+
         private String url;
 
 
         private Builder(Context context) {
 
+        }
+
+
+        public Builder with(Context context) {
+            this.context = context;
+            return this;
         }
 
 

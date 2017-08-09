@@ -21,10 +21,10 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Administrator on 2017/8/7.
  */
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+public abstract class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
-    private Context context;
-    private String[] images;
+    protected Context context;
+    protected String[] images;
 
     public ImageAdapter(Context contexts, String[] images) {
         this.context = contexts;
@@ -40,13 +40,22 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
 
     @Override
-    public void onBindViewHolder(ImageViewHolder holder, int position) {
+    public void onBindViewHolder(final ImageViewHolder holder, final int position) {
 
 
-        RxImageLoader.with(context)
+        showImage(holder, position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showImage(holder, position);
+            }
+        });
+
+/*        RxImageLoader.with(context)
                 .load(images[position])
                 .error(R.drawable.image_default)
-                .into((ImageView) holder.itemView);
+                .into((ImageView) holder.itemView);*/
 
 /*        Glide.with(context)
                 .load(imageInfos[position].getUrl())
@@ -61,6 +70,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public int getItemCount() {
         return images.length;
     }
+
+
+    protected abstract void showImage(ImageViewHolder holder, int position);
+
 
 
 

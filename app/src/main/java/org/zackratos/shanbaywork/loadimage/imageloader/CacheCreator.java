@@ -8,6 +8,7 @@ import android.support.annotation.DrawableRes;
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2017/8/8.
@@ -26,7 +27,7 @@ public class CacheCreator {
 
         diskObservable = new DiskObservable(context);
 
-        networkObservable = new NetworkObservable(context);
+        networkObservable = new NetworkObservable();
     }
 
 
@@ -41,13 +42,30 @@ public class CacheCreator {
                 .doOnNext(new Consumer<ImageInfo>() {
                     @Override
                     public void accept(@NonNull ImageInfo imageInfo) throws Exception {
+                        byte[] bytes = imageInfo.getBytes();
+                        if (bytes == null) {
+                            Bitmap bitmap = BitmapTools.zoomBitmap(context.getResources(), defaultId);
+                            imageInfo.setBitmap(bitmap);
+                            return;
+                        }
+                        Bitmap originBitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        imageInfo.setBitmap(originBitmap);
+                        imageInfo.setBytes(null);
+                        diskObservable.putImageToCache(imageInfo);             //原尺寸保存
+                        Bitmap zoomBitmap = BitmapTools.zoomBitmap(bytes);     //压缩后显示
+                        imageInfo.setBitmap(zoomBitmap);
+                    }
+                });
+/*                .doOnNext(new Consumer<ImageInfo>() {
+                    @Override
+                    public void accept(@NonNull ImageInfo imageInfo) throws Exception {
                         diskObservable.putImageToCache(imageInfo);
                         if (imageInfo.getBitmap() == null && defaultId != 0) {
-                            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), defaultId);
+                            Bitmap bitmap = BitmapTools.zoomBitmap(context.getResources(), defaultId);
                             imageInfo.setBitmap(bitmap);
                         }
                     }
-                });
+                });*/
     }
 
 

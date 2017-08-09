@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +12,13 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/custom_view"
+        android:text="@string/custom_controls_spannable"
+        android:onClick="customSpannable"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/custom_controls_view"
         android:onClick="customView"/>
 
 
@@ -21,9 +26,15 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/load_image"
-        android:onClick="loadImage"/>
+        android:text="@string/load_image_glide"
+        android:onClick="loadGlide"/>
 
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/load_image_rxjava"
+        android:onClick="loadRxJava"/>
 
 
 </LinearLayout>

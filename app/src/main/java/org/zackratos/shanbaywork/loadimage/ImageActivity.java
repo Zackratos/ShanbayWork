@@ -11,7 +11,7 @@ import android.util.Log;
 
 import org.zackratos.shanbaywork.R;
 
-public class ImageActivity extends AppCompatActivity {
+public abstract class ImageActivity extends AppCompatActivity {
 
     private static final String TAG = "ImageActivity";
 
@@ -64,11 +64,14 @@ public class ImageActivity extends AppCompatActivity {
         };
 
 
-        rv.setAdapter(new ImageAdapter(this, images));
-
-
+        rv.setAdapter(setImageAdapter(images));
 
     }
+
+
+
+    protected abstract ImageAdapter setImageAdapter(String[] images);
+
 
 
 

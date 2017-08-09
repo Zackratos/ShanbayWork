@@ -1,6 +1,5 @@
 package org.zackratos.shanbaywork.loadimage.imageloader;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -17,25 +16,51 @@ import retrofit2.Response;
 
 public class NetworkObservable extends CacheObservable {
 
-    private Context context;
-
-    public NetworkObservable(Context context) {
-        this.context = context;
-    }
 
 
     @Override
     public ImageInfo getImageFromCache(String imageName) {
-        Bitmap bitmap = downloadImage(imageName);
-        return new ImageInfo(imageName, bitmap);
+//        Bitmap bitmap = downloadImage(imageName);
+//        return new ImageInfo(imageName, bitmap);
+        byte[] bytes = downloadImageByte(imageName);
+        return new ImageInfo(imageName, bytes);
     }
 
 
 
+    private byte[] downloadImageByte(String imageName) {
+        try {
+            Response<ResponseBody> response = RetrofitManager.getImageRetrofit()
+                    .create(ImageApi.class)
+                    .downloadImage(imageName)
+                    .execute();
+            if (response == null) {
+                return null;
+            }
+            ResponseBody body = response.body();
+            if (body == null) {
+                return null;
+            }
+            return body.bytes();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     private Bitmap downloadImage(String imageName) {
 
-        try {
+        byte[] bytes = downloadImageByte(imageName);
+        if (bytes == null) {
+            return null;
+        }
+
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+/*        try {
             Response<ResponseBody> response = RetrofitManager.getImageRetrofit()
                     .create(ImageApi.class)
                     .downloadImage(imageName)
@@ -55,7 +80,7 @@ public class NetworkObservable extends CacheObservable {
             e.printStackTrace();
         }
 
-        return null;
+        return null;*/
     }
 
 
