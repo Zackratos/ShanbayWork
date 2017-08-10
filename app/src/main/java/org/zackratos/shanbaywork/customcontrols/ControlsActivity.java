@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import org.zackratos.shanbaywork.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class ControlsActivity extends AppCompatActivity {
 
 
@@ -43,7 +46,6 @@ public abstract class ControlsActivity extends AppCompatActivity {
 
     private void showByTextView() {
 
-
         String text = getString(R.string.text);
         SpannableString spannableString = new SpannableString(text);
         final TextView tv = (TextView) findViewById(R.id.text_view);
@@ -52,9 +54,12 @@ public abstract class ControlsActivity extends AppCompatActivity {
         int start = 0;
         int end = 0;
 
+
         for (String paragraph : text.split("\n\n")) {
 
             for (final String word : paragraph.split(" ")) {
+
+
 
                 end = start + word.length();
 
@@ -65,7 +70,10 @@ public abstract class ControlsActivity extends AppCompatActivity {
                                 .subSequence(tv.getSelectionStart(),
                                         tv.getSelectionEnd());
 
-                        showQueryWord(word);
+//                        showQueryWord(word.replaceAll("\\pP", ""));
+                        showQueryWord(word.replaceAll("\\.", "")
+                                .replaceAll(",", "").replaceAll("\\[", "")
+                                .replaceAll("]", "").replaceAll("''", ""));
                     }
                     @Override
                     public void updateDrawState(TextPaint ds) {

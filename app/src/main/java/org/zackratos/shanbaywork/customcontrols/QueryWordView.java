@@ -40,6 +40,7 @@ public class QueryWordView extends FrameLayout {
     private MediaPlayer mediaPlayer;
 
     private String audioUrl;
+    private String lastAudioUrl;
 
 
     public QueryWordView(Context context) {
@@ -85,7 +86,22 @@ public class QueryWordView extends FrameLayout {
             return;
         }
 
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+            startMediaPlayer();
+        } else {
+            if (!audioUrl.equals(lastAudioUrl)) { // 如果 url 变了就重置 mediaplayer
+                mediaPlayer.reset();
+                startMediaPlayer();
+            } else {    // url 没变就直接播放
+                mediaPlayer.start();
+            }
+        }
 
+
+        lastAudioUrl = audioUrl;
+
+/*
         try {
             if (mediaPlayer == null) {
                 mediaPlayer = new MediaPlayer();
@@ -95,8 +111,43 @@ public class QueryWordView extends FrameLayout {
             mediaPlayer.start();
         } catch (IOException e) {
             e.printStackTrace();
+        }*/
+
+    }
+
+
+
+    private void startMediaPlayer() {
+
+        try {
+            mediaPlayer.setDataSource(audioUrl);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+/*        Observable.create(new ObservableOnSubscribe<MediaPlayer>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<MediaPlayer> e) throws Exception {
+                e.onNext(mediaPlayer);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.newThread())
+                .doOnNext(new Consumer<MediaPlayer>() {
+                    @Override
+                    public void accept(@NonNull MediaPlayer mediaPlayer) throws Exception {
+                        mediaPlayer.setDataSource(audioUrl);
+                        mediaPlayer.prepare();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MediaPlayer>() {
+                    @Override
+                    public void accept(@NonNull MediaPlayer mediaPlayer) throws Exception {
+                        mediaPlayer.start();
+                    }
+                });*/
     }
 
 
@@ -120,9 +171,9 @@ public class QueryWordView extends FrameLayout {
                     public void accept(@NonNull WordInfo.Data data) throws Exception {
                         msgView.setText(null);
                         contentView.setText(data.getContent());
-                        pronunciationView.setText(data.getPronunciation());
+                        pronunciationView.setText(String.format("/%s/", data.getPronunciation()));
                         definitionView.setText(data.getDefinition());
-                        audioButton.setImageResource(R.drawable.ic_volume_up_black_24dp);
+                        audioButton.setImageResource(R.drawable.ic_volume_up_24dp);
                         audioUrl = data.getAudio();
                     }
                 }, new Consumer<Throwable>() {
@@ -137,6 +188,22 @@ public class QueryWordView extends FrameLayout {
                     }
                 });
     }
+
+
+
+
+    public void releaseMediaPlayer() {
+        if (mediaPlayer == null) {
+            return;
+        }
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+        }
+        mediaPlayer.release();
+        mediaPlayer = null;
+
+    }
+
 
 
     public interface OnCloseListener {

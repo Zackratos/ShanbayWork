@@ -40,7 +40,7 @@ public abstract class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Ima
 
 
     @Override
-    public void onBindViewHolder(final ImageViewHolder holder, final int position) {
+    public void onBindViewHolder(ImageViewHolder holder, final int position) {
 
 
         showImage(holder, position);
@@ -48,7 +48,7 @@ public abstract class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Ima
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showImage(holder, position);
+                notifyItemChanged(position);
             }
         });
 
@@ -73,8 +73,6 @@ public abstract class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Ima
 
 
     protected abstract void showImage(ImageViewHolder holder, int position);
-
-
 
 
 

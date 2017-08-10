@@ -9,11 +9,11 @@ import org.zackratos.shanbaywork.R;
  * Created by Administrator on 2017/8/9.
  */
 
-public class SpannableActivity extends ControlsActivity {
+public class DialogActivity extends ControlsActivity {
 
 
     public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, SpannableActivity.class);
+        Intent intent = new Intent(context, DialogActivity.class);
         return intent;
     }
 
@@ -26,10 +26,7 @@ public class SpannableActivity extends ControlsActivity {
 
     @Override
     protected void showQueryWord(String word) {
-        QueryWordDialog dialog = QueryWordDialog.newInstance(word
-                .replaceAll("\\.", "").replaceAll(",", "")
-                .replaceAll("\\[", "").replaceAll("]", "")
-                .replaceAll("''", ""));
+        QueryWordDialog dialog = QueryWordDialog.newInstance(word);
         dialog.show(getSupportFragmentManager(), "tag");
 
     }

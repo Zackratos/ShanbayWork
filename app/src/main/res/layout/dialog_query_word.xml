@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:scaleType="center"
-        android:tint="@android:color/black"
+        android:tint="@color/main"
         android:src="@android:drawable/arrow_down_float" />
 
 
@@ -31,7 +31,8 @@
         <TextView
             android:id="@+id/word_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="@color/main"/>
 
         <TextView
             android:id="@+id/word_pronunciation"

@@ -64,6 +64,14 @@ public class ViewActivity extends ControlsActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //回收 mediaplayer
+        queryWordView.releaseMediaPlayer();
+    }
+
+
 
     @Override
     protected void showQueryWord(String word) {
@@ -76,8 +84,7 @@ public class ViewActivity extends ControlsActivity {
         if (!opened) {
             openAnimator.start();
         }
-
-
+        queryWordView.setWord(word);
 
         opened = true;
 

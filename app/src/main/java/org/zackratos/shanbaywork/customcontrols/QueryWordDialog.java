@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import org.zackratos.shanbaywork.BottomDialog;
 import org.zackratos.shanbaywork.R;
 import org.zackratos.shanbaywork.RetrofitManager;
 
@@ -149,7 +148,7 @@ public class QueryWordDialog extends BottomDialog {
                         contentView.setText(data.getContent());
                         pronunciationView.setText(String.format("/%s/", data.getPronunciation()));
                         definitionView.setText(data.getDefinition());
-                        audioButton.setImageResource(R.drawable.ic_volume_up_black_24dp);
+                        audioButton.setImageResource(R.drawable.ic_volume_up_24dp);
                         audioUrl = data.getAudio();
                     }
                 }, new Consumer<Throwable>() {

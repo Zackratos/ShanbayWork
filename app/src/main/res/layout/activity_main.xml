@@ -12,8 +12,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/custom_controls_spannable"
-        android:onClick="customSpannable"/>
+        android:text="@string/custom_controls_dialog"
+        android:onClick="customDialog"/>
 
     <Button
         android:layout_width="match_parent"

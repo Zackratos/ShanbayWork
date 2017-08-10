@@ -17,7 +17,6 @@ public class RetrofitManager {
 
     public static Retrofit getWordRetrofit() {
         return Single.wordRetrofit;
-
     }
 
 
@@ -28,14 +27,14 @@ public class RetrofitManager {
 
 
     private static class Single {
-        private static Retrofit wordRetrofit = new Retrofit.Builder()
+        private static final Retrofit wordRetrofit = new Retrofit.Builder()
                 .baseUrl(WordApi.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
 
-        private static Retrofit imageRetrofit = new Retrofit.Builder()
+        private static final Retrofit imageRetrofit = new Retrofit.Builder()
                 .baseUrl(ImageApi.BASE_URL)
                 .build();
     }

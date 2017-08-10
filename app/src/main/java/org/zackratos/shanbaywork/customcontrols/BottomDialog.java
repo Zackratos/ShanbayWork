@@ -1,4 +1,4 @@
-package org.zackratos.shanbaywork;
+package org.zackratos.shanbaywork.customcontrols;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+
+import org.zackratos.shanbaywork.R;
 
 /**
  * Created by Administrator on 2017/8/7.

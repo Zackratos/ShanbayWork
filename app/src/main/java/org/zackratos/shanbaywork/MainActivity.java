@@ -1,24 +1,14 @@
 package org.zackratos.shanbaywork;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import org.zackratos.shanbaywork.customcontrols.ControlsActivity;
-import org.zackratos.shanbaywork.customcontrols.SpannableActivity;
+import org.zackratos.shanbaywork.customcontrols.DialogActivity;
 import org.zackratos.shanbaywork.customcontrols.ViewActivity;
 import org.zackratos.shanbaywork.loadimage.GlideActivity;
-import org.zackratos.shanbaywork.loadimage.ImageActivity;
 import org.zackratos.shanbaywork.loadimage.RxLoaderActivity;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Predicate;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,13 +19,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        rxTest();
+//        rxTest();
     }
 
 
 
-    public void customSpannable(View view) {
-        enter(SpannableActivity.newIntent(this));
+    public void customDialog(View view) {
+        enter(DialogActivity.newIntent(this));
     }
 
 
@@ -66,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+/*
     private void rxTest() {
         Observable<String> observable1 = Observable.just("1111");
         Observable<String> observable2 = Observable.just("2222");
@@ -110,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+*/
 
 
 
