@@ -5,20 +5,22 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import org.zackratos.shanbaywork.R;
+import org.zackratos.shanbaywork.loadimage.imageloader.BitmapUtils;
 
 /**
  * Created by Administrator on 2017/8/7.
  */
 
-public abstract class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
 
     protected Context context;
     protected String[] images;
 
-    public ImageAdapter(Context contexts, String[] images) {
-        this.context = contexts;
+    public ImageAdapter(Context context, String[] images) {
+        this.context = context;
         this.images = images;
     }
 
@@ -34,7 +36,9 @@ public abstract class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Ima
     public void onBindViewHolder(ImageViewHolder holder, final int position) {
 
 
-        showImage(holder, position);
+        new BitmapUtils(context).disPlay((ImageView) holder.itemView, images[position]);
+
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +56,7 @@ public abstract class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Ima
     }
 
 
-    protected abstract void showImage(ImageViewHolder holder, int position);
+//    protected abstract void showImage(ImageViewHolder holder, int position);
 
 
 

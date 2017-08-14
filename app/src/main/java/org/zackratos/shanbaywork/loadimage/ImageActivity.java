@@ -1,5 +1,7 @@
 package org.zackratos.shanbaywork.loadimage;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,20 +10,16 @@ import android.util.Log;
 
 import org.zackratos.shanbaywork.R;
 
-public abstract class ImageActivity extends AppCompatActivity {
+public class ImageActivity extends AppCompatActivity {
 
     private static final String TAG = "ImageActivity";
 
 
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, ImageActivity.class);
+        return intent;
+    }
 
-/*    private static final String NAME_1 = "image - 1";
-    private static final String NAME_2 = "image - 2";
-    private static final String NAME_3 = "image - 3";
-    private static final String NAME_4 = "image - 4";
-    private static final String NAME_5 = "image - 5";
-    private static final String NAME_6 = "image - 6";
-    private static final String NAME_7 = "image - 7";
-    private static final String NAME_8 = "image - 8";*/
 
 
     private static final String NAME_1 = "f1672263006c6e28bb9dee7652fa4cf6.jpg";
@@ -57,13 +55,13 @@ public abstract class ImageActivity extends AppCompatActivity {
         };
 
 
-        rv.setAdapter(setImageAdapter(images));
+        rv.setAdapter(new ImageAdapter(this, images));
 
     }
 
 
 
-    protected abstract ImageAdapter setImageAdapter(String[] images);
+//    protected abstract ImageAdapter setImageAdapter(String[] images);
 
 
 

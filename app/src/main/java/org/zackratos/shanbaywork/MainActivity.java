@@ -7,8 +7,7 @@ import android.view.View;
 
 import org.zackratos.shanbaywork.customcontrols.DialogActivity;
 import org.zackratos.shanbaywork.customcontrols.ViewActivity;
-import org.zackratos.shanbaywork.loadimage.GlideActivity;
-import org.zackratos.shanbaywork.loadimage.RxLoaderActivity;
+import org.zackratos.shanbaywork.loadimage.ImageActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        rxTest();
     }
 
 
@@ -37,13 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void loadGlide(View view) {
-        enter(GlideActivity.newIntent(this));
+        enter(ImageActivity.newIntent(this));
     }
 
 
-    public void loadRxJava(View view) {
-        enter(RxLoaderActivity.newIntent(this));
-    }
 
 
 
@@ -53,55 +48,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-/*
-    private void rxTest() {
-        Observable<String> observable1 = Observable.just("1111");
-        Observable<String> observable2 = Observable.just("2222");
-        Observable<String> observable3 = Observable.just("3333");
-
-
-        Observable.concat(observable1, observable2, observable3)
-                .first("1111").toObservable()
-                .filter(new Predicate<String>() {
-                    @Override
-                    public boolean test(@NonNull String s) throws Exception {
-                        return true;
-                    }
-                })
-                .doOnNext(new Consumer<String>() {
-                    @Override
-                    public void accept(@NonNull String s) throws Exception {
-                        Log.d(TAG, "accept: " + s);
-                    }
-                })
-                .subscribe(new Observer<String>() {
-
-                    Disposable disposable;
-
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(@NonNull String s) {
-                        Log.d(TAG, "onNext: " + s);
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-    }
-*/
 
 
 

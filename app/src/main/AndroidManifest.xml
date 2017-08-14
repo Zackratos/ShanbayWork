@@ -24,8 +24,7 @@
         </activity>
         <activity android:name=".customcontrols.DialogActivity" />
         <activity android:name=".customcontrols.ViewActivity"/>
-        <activity android:name=".loadimage.GlideActivity"/>
-        <activity android:name=".loadimage.RxLoaderActivity"/>
+        <activity android:name=".loadimage.ImageActivity"/>
     </application>
 
 </manifest>
