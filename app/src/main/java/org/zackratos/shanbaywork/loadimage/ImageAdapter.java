@@ -56,8 +56,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     }
 
 
-//    protected abstract void showImage(ImageViewHolder holder, int position);
-
 
 
 

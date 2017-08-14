@@ -101,17 +101,7 @@ public class QueryWordView extends FrameLayout {
 
         lastAudioUrl = audioUrl;
 
-/*
-        try {
-            if (mediaPlayer == null) {
-                mediaPlayer = new MediaPlayer();
-                mediaPlayer.setDataSource(audioUrl);
-                mediaPlayer.prepare();
-            }
-            mediaPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
 
     }
 
@@ -127,27 +117,7 @@ public class QueryWordView extends FrameLayout {
             e.printStackTrace();
         }
 
-/*        Observable.create(new ObservableOnSubscribe<MediaPlayer>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<MediaPlayer> e) throws Exception {
-                e.onNext(mediaPlayer);
-                e.onComplete();
-            }
-        }).subscribeOn(Schedulers.newThread())
-                .doOnNext(new Consumer<MediaPlayer>() {
-                    @Override
-                    public void accept(@NonNull MediaPlayer mediaPlayer) throws Exception {
-                        mediaPlayer.setDataSource(audioUrl);
-                        mediaPlayer.prepare();
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MediaPlayer>() {
-                    @Override
-                    public void accept(@NonNull MediaPlayer mediaPlayer) throws Exception {
-                        mediaPlayer.start();
-                    }
-                });*/
+
     }
 
 
@@ -215,30 +185,6 @@ public class QueryWordView extends FrameLayout {
     public void setOnCloseListener(OnCloseListener listener) {
         this.listener = listener;
     }
-
-
-/*    public void setMsg(String msg) {
-        msgView.setText(msg);
-    }
-
-
-    public void setContent(String content) {
-        contentView.setText(content);
-    }
-
-    public void setPronunciation(String pronunciation) {
-        pronunciationView.setText(pronunciation);
-    }
-
-    public void setDefinition(String definition) {
-        definitionView.setText(definition);
-    }
-
-
-
-    public void setAudioUrl(String audioUrl) {
-        this.audioUrl = audioUrl;
-    }*/
 
 
 

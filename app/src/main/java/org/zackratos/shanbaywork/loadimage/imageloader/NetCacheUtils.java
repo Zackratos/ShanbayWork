@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import org.zackratos.shanbaywork.RetrofitManager;
-import org.zackratos.shanbaywork.loadimage.rximageloader.ImageApi;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +30,7 @@ public class NetCacheUtils {
     /**
      * 从网络下载图片
      * @param ivPic 显示图片的imageview
-     * @param name   下载图片的名字
+     * @param name   下载图片的
      */
     public void getBitmapFromNet(ImageView ivPic, String name) {
         new BitmapTask().execute(ivPic, name);//启动AsyncTask
@@ -112,30 +111,6 @@ public class NetCacheUtils {
 
         return null;
 
-
-/*        HttpURLConnection conn = null;
-        try {
-            conn = (HttpURLConnection) new URL(url).openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
-            conn.setRequestMethod("GET");
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == 200) {
-                //图片压缩
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 3;//宽高压缩为原来的1/3
-                options.inPreferredConfig = Bitmap.Config.ARGB_4444;
-                Bitmap bitmap = BitmapFactory.decodeStream(conn.getInputStream(), null, options);
-                return bitmap;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            conn.disconnect();
-        }
-
-        return null;*/
     }
 
 

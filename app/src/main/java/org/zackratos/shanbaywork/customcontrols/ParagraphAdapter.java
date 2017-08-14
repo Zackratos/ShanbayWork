@@ -63,36 +63,6 @@ public class ParagraphAdapter extends RecyclerView.Adapter<ParagraphAdapter.Para
         final String paragraph = paragraphs[position];
         final SpannableString spannableString = new SpannableString(paragraph);
 
-/*        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == 1) {
-                    ((TextView) holder.itemView).setText(spannableString);
-                }
-            }
-        };
-        cachedThreadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                start = 0;
-                end = 0;
-                for (String word : paragraph.split(" ")) {
-                    end = start + word.length();
-                    spannableString.setSpan(new ClickableSpan() {
-                        @Override
-                        public void onClick(View widget) {
-
-                        }
-                    }, start, end, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    start = end + 1;
-                }
-                Message msg = new Message();
-                msg.what = 1;
-                handler.sendMessage(msg);
-            }
-        });*/
-
 
         Observable.just(paragraph)
                 .subscribeOn(Schedulers.newThread())

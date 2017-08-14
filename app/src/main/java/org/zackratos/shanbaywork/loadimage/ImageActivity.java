@@ -61,8 +61,6 @@ public class ImageActivity extends AppCompatActivity {
 
 
 
-//    protected abstract ImageAdapter setImageAdapter(String[] images);
-
 
 
 

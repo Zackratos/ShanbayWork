@@ -19,7 +19,7 @@ public class LocalCacheUtils {
 
 
     public LocalCacheUtils(Context context) {
-        path = context.getExternalCacheDir().getParent() + "/images";
+        path = context.getExternalCacheDir().getAbsolutePath() + "/images";
     }
 
 
@@ -50,15 +50,14 @@ public class LocalCacheUtils {
      */
     public void setBitmapToLocal(String name, Bitmap bitmap){
         try {
-            File file = new File(path, name);
 
-            //通过得到文件的父文件,判断父文件是否存在
-            File parentFile = file.getParentFile();
-            if (!parentFile.exists()){
-                parentFile.mkdirs();
+            File folder = new File(path);
+            if (!folder.exists()) {
+                folder.mkdir();
             }
 
-            //把图片保存至本地
+            File file = new File(path, name);
+
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
         } catch (Exception e) {
             e.printStackTrace();

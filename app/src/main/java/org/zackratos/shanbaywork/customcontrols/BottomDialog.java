@@ -44,8 +44,6 @@ public abstract class BottomDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        //去除标题栏
-//        getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 
         Window window = getDialog().getWindow();

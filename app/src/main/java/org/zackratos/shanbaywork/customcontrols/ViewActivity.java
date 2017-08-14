@@ -50,13 +50,6 @@ public class ViewActivity extends ControlsActivity {
         });
     }
 
-/*    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            queryHeight = queryWordView.getHeight();
-        }
-    }*/
 
     @Override
     protected int createContentView() {
