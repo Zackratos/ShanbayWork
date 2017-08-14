@@ -1,4 +1,4 @@
-package org.zackratos.shanbaywork.loadimage.imageloader;
+package org.zackratos.shanbaywork.loadimage.rximageloader;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;

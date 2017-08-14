@@ -1,8 +1,7 @@
-package org.zackratos.shanbaywork.loadimage.imageloader;
+package org.zackratos.shanbaywork.loadimage.rximageloader;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.File;

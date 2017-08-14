@@ -5,17 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.zackratos.shanbaywork.R;
-import org.zackratos.shanbaywork.loadimage.imageloader.ImageInfo;
-import org.zackratos.shanbaywork.loadimage.imageloader.RxImageLoader;
-
-import io.reactivex.Observable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2017/8/7.
@@ -52,17 +43,6 @@ public abstract class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.Ima
             }
         });
 
-/*        RxImageLoader.with(context)
-                .load(images[position])
-                .error(R.drawable.image_default)
-                .into((ImageView) holder.itemView);*/
-
-/*        Glide.with(context)
-                .load(imageInfos[position].getUrl())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)  //去除 glide 自带的磁盘缓存
-                .skipMemoryCache(true)                      //去除 glide 自带的内存缓存
-                .error(R.drawable.image_default)
-                .into((ImageView) holder.itemView);*/
     }
 
 

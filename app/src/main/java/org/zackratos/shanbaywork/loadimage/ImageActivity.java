@@ -1,12 +1,9 @@
 package org.zackratos.shanbaywork.loadimage;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.zackratos.shanbaywork.R;
@@ -16,10 +13,6 @@ public abstract class ImageActivity extends AppCompatActivity {
     private static final String TAG = "ImageActivity";
 
 
-    public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, ImageActivity.class);
-        return intent;
-    }
 
 /*    private static final String NAME_1 = "image - 1";
     private static final String NAME_2 = "image - 2";

@@ -1,7 +1,7 @@
 package org.zackratos.shanbaywork;
 
 import org.zackratos.shanbaywork.customcontrols.WordApi;
-import org.zackratos.shanbaywork.loadimage.imageloader.ImageApi;
+import org.zackratos.shanbaywork.loadimage.rximageloader.ImageApi;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

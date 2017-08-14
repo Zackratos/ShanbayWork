@@ -1,4 +1,4 @@
-package org.zackratos.shanbaywork.loadimage.imageloader;
+package org.zackratos.shanbaywork.loadimage.rximageloader;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

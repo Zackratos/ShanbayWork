@@ -1,4 +1,4 @@
-package org.zackratos.shanbaywork.loadimage.imageloader;
+package org.zackratos.shanbaywork.loadimage.rximageloader;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import org.zackratos.shanbaywork.R;
-import org.zackratos.shanbaywork.loadimage.imageloader.RxImageLoader;
+import org.zackratos.shanbaywork.loadimage.rximageloader.RxImageLoader;
 
 /**
  * Created by Administrator on 2017/8/9.
