@@ -39,12 +39,19 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     }
 
     @Override
-    public void onBindViewHolder(ImageViewHolder holder, int position) {
+    public void onBindViewHolder(ImageViewHolder holder, final int position) {
         ImageView imageView = (ImageView) holder.itemView;
         AsyncTask task = mImageLoader.disPlay(imageView, mImages[position]);
         if (task != null) {
             tasks.add(task);
         }
+        // 图片下载失败时，点击重试
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notifyItemChanged(position);
+            }
+        });
     }
 
     @Override
