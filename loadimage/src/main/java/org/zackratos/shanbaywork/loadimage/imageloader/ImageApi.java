@@ -10,9 +10,8 @@ import retrofit2.http.Path;
  */
 
 public interface ImageApi {
-    public static final String BASE_URL = "https://static.baydn.com/";
 
-
+    String BASE_URL = "https://static.baydn.com/";
 
     @GET("media/media_store/image/{name}")
     Call<ResponseBody> downloadImage(@Path("name") String name);

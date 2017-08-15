@@ -1,42 +1,49 @@
 package org.zackratos.shanbaywork.loadimage.imageloader;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import org.zackratos.shanbaywork.RetrofitManager;
+import org.zackratos.shanbaywork.loadimage.R;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by Administrator on 2017/8/14.
+ * 网络缓存
  */
 
-public class NetCacheUtils {
+public class NetCache {
 
-    private LocalCacheUtils mLocalCacheUtils;
+    private LocalCache mLocalCache;
+    private Context mContext;
 
 
-    public NetCacheUtils(LocalCacheUtils localCacheUtils) {
-        mLocalCacheUtils = localCacheUtils;
+    public NetCache(Context context, LocalCache localCache) {
+        mContext = context;
+        mLocalCache = localCache;
     }
 
 
     /**
      * 从网络下载图片
-     * @param ivPic 显示图片的imageview
-     * @param name   下载图片的
+     * @param imageView
+     * @param name
+     * @return 返回 AsyncTask 对象，方便取消任务
      */
-    public void getBitmapFromNet(ImageView ivPic, String name) {
-        new BitmapTask().execute(ivPic, name);//启动AsyncTask
-
+    public BitmapTask getBitmapFromNet(ImageView imageView, String name) {
+        BitmapTask task = new BitmapTask();
+        task.execute(imageView, name);
+        return task;
     }
-
 
     /**
      * AsyncTask就是对handler和线程池的封装
@@ -46,7 +53,7 @@ public class NetCacheUtils {
      */
     class BitmapTask extends AsyncTask<Object, Void, Bitmap> {
 
-        private ImageView ivPic;
+        private ImageView imageView;
         private String name;
 
         /**
@@ -56,9 +63,8 @@ public class NetCacheUtils {
          */
         @Override
         protected Bitmap doInBackground(Object[] params) {
-            ivPic = (ImageView) params[0];
+            imageView = (ImageView) params[0];
             name = (String) params[1];
-
             return downLoadBitmap(name);
         }
 
@@ -77,17 +83,26 @@ public class NetCacheUtils {
          */
         @Override
         protected void onPostExecute(Bitmap result) {
-            if (result != null) {
-                ivPic.setImageBitmap(result);
-
-                //从网络获取图片后,保存至本地缓存
-                mLocalCacheUtils.setBitmapToLocal(name, result);
-
+            //无网络或者下载失败时，显示默认图片
+            if (result == null) {
+                // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                Resources resources = mContext.getResources();
+                BitmapFactory.decodeResource(resources, R.drawable.image_default, options);
+                options.inSampleSize = 3; //图片压缩为原来的 1/3
+                // 使用获取到的inSampleSize值再次解析图片
+                options.inJustDecodeBounds = false;
+                imageView.setImageBitmap(BitmapFactory.decodeResource(resources, R.drawable.image_default, options));
+                return;
             }
+
+            imageView.setImageBitmap(result);
+            //从网络获取图片后,保存至本地缓存
+            mLocalCache.setBitmapToLocal(name, result);
+
         }
     }
-
-
 
     /**
      * 网络下载图片
@@ -96,7 +111,9 @@ public class NetCacheUtils {
      */
     private Bitmap downLoadBitmap(String name) {
         try {
-            Response<ResponseBody> response = RetrofitManager.getImageRetrofit()
+            Response<ResponseBody> response = new Retrofit.Builder()
+                    .baseUrl(ImageApi.BASE_URL)
+                    .build()
                     .create(ImageApi.class)
                     .downloadImage(name)
                     .execute();
@@ -110,8 +127,6 @@ public class NetCacheUtils {
         }
 
         return null;
-
     }
-
 
 }

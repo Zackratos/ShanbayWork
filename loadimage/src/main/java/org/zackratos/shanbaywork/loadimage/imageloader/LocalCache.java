@@ -10,36 +10,30 @@ import java.io.FileOutputStream;
 
 /**
  * Created by Administrator on 2017/8/14.
+ * 本地缓存
  */
 
-public class LocalCacheUtils {
+public class LocalCache {
 
-
+    //图片储存路径
     private String path;
 
-
-    public LocalCacheUtils(Context context) {
-        path = context.getExternalCacheDir().getAbsolutePath() + "/images";
+    public LocalCache(Context context) {
+        path = context.getExternalCacheDir().getParent() + "/images";
     }
-
-
 
     /**
      * 从本地读取图片
      * @param name
      */
     public Bitmap getBitmapFromLocal(String name){
-
         try {
             File file = new File(path, name);
-
             Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
-
             return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -50,19 +44,15 @@ public class LocalCacheUtils {
      */
     public void setBitmapToLocal(String name, Bitmap bitmap){
         try {
-
             File folder = new File(path);
             if (!folder.exists()) {
                 folder.mkdir();
             }
-
             File file = new File(path, name);
-
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, new FileOutputStream(file));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
 }

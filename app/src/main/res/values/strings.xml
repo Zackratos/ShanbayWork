@@ -3,7 +3,7 @@
 
     <string name="custom_controls_dialog">自定义控件(dialog)</string>
     <string name="custom_controls_view">自定义控件(view)</string>
-    <string name="load_image_glide">加载图片</string>
+    <string name="load_image">加载图片</string>
     <string name="load_image_rxjava">加载图片(RxJava)</string>
 
 

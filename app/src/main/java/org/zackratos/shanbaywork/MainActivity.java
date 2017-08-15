@@ -11,7 +11,7 @@ import org.zackratos.shanbaywork.loadimage.ImageActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "ImageActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
         enter(ViewActivity.newIntent(this));
     }
 
-    public void loadGlide(View view) {
-        enter(ImageActivity.newIntent(this));
+    public void loadImage(View view) {
+//        enter(ImageActivity.newIntent(this));
+        startActivity(ImageActivity.newIntent(this));
     }
 
     /**
