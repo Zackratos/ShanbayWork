@@ -20,36 +20,24 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
     public void customDialog(View view) {
         enter(DialogActivity.newIntent(this));
     }
-
-
 
     public void customView(View view) {
         enter(ViewActivity.newIntent(this));
     }
 
-
-
     public void loadGlide(View view) {
         enter(ImageActivity.newIntent(this));
     }
 
-
-
-
-
-
+    /**
+     *
+     * @param intent
+     */
     private void enter(Intent intent) {
         startActivity(intent);
     }
-
-
-
-
-
 
 }
