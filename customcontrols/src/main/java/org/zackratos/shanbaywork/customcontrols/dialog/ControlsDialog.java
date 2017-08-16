@@ -27,7 +27,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * 自定义控件 dialog，用于显示查词框
+ * 自定义控件 dialog 实现查词框
  * Created by Administrator on 2017/8/16.
  */
 

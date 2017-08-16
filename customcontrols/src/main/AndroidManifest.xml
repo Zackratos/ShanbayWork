@@ -6,9 +6,9 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:supportsRtl="true">
-        <activity android:name=".ControlsActivity"/>
+        <activity android:name=".dialog.DialogControlsActivity"/>
+        <activity android:name=".view.ViewControlsActivity"/>
     </application>
 
 </manifest>

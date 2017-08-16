@@ -24,6 +24,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  *  自定义 view 实现查词框
@@ -85,6 +87,8 @@ public class ControlsView extends FrameLayout {
      */
     public void showWordInfo(String word) {
         new Retrofit.Builder().baseUrl(WordApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(WordApi.class)
                 .rxQueryWord(word)
@@ -105,11 +109,12 @@ public class ControlsView extends FrameLayout {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull WordInfo.Data data) throws Exception {
                         contentView.setText(data.getContent());
-                        pronunciationView.setText(data.getPronunciation());
+                        pronunciationView.setText(String.format("/%s/", data.getPronunciation()));
                         definitionView.setText(data.getDefinition());
                         audioButton.setImageResource(R.drawable.ic_volume_up_24dp);
                         msgView.setText(null);
                         audioUrl = data.getAudio();
+                        hasSource = false;
                     }
                 }, new Consumer<Throwable>() {
                     @Override
@@ -136,6 +141,7 @@ public class ControlsView extends FrameLayout {
         }
         try {
             if (!hasSource) {
+                mMediaPlayer.reset();
                 mMediaPlayer.setDataSource(audioUrl);
                 mMediaPlayer.prepare();
                 hasSource = true;

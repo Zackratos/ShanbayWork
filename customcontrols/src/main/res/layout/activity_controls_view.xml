@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/activity_controls"/>
+
+    <org.zackratos.shanbaywork.customcontrols.view.ControlsView
+        android:id="@+id/controls_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:translationY="@dimen/word_view_translation_y">
+
+    </org.zackratos.shanbaywork.customcontrols.view.ControlsView>
+
+</RelativeLayout>
