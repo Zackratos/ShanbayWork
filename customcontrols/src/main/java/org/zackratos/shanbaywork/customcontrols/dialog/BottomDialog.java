@@ -1,4 +1,4 @@
-package org.zackratos.shanbaywork.customcontrols;
+package org.zackratos.shanbaywork.customcontrols.dialog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,22 +11,21 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 
-import org.zackratos.shanbaywork.R;
+import org.zackratos.shanbaywork.customcontrols.R;
 
 /**
- * Created by Administrator on 2017/8/7.
+ * 从界面底部弹出的 dialog
+ * Created by Administrator on 2017/8/16.
  */
 
 public abstract class BottomDialog extends DialogFragment {
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // 去除标题栏，设置主题
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BottomDialog);
-
     }
-
 
     @Override
     public void onStart() {
@@ -37,27 +36,23 @@ public abstract class BottomDialog extends DialogFragment {
         getDialog().getWindow().setBackgroundDrawable(null);
     }
 
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-
-
         Window window = getDialog().getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.gravity = Gravity.BOTTOM; //底部
+        // 在底部显示
+        lp.gravity = Gravity.BOTTOM;
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
-
-
         return createView(inflater, container);
-
     }
 
-
-
+    /**
+     * 设置布局
+     * @param inflater
+     * @param container
+     * @return
+     */
     protected abstract View createView(LayoutInflater inflater, ViewGroup container);
 }

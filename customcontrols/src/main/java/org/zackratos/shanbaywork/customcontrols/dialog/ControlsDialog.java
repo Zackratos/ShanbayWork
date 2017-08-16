@@ -1,8 +1,7 @@
-package org.zackratos.shanbaywork.customcontrols;
+package org.zackratos.shanbaywork.customcontrols.dialog;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import org.zackratos.shanbaywork.R;
-import org.zackratos.shanbaywork.RetrofitManager;
+import org.zackratos.shanbaywork.customcontrols.R;
+import org.zackratos.shanbaywork.customcontrols.WordApi;
+import org.zackratos.shanbaywork.customcontrols.WordInfo;
 
 import java.io.IOException;
 
@@ -22,72 +22,68 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by Administrator on 2017/8/7.
+ * 自定义控件 dialog，用于显示查词框
+ * Created by Administrator on 2017/8/16.
  */
 
-public class QueryWordDialog extends BottomDialog {
-
-    private static final String TAG = "QueryWordDialog";
+public class ControlsDialog extends BottomDialog {
 
     private static final String WORD = "word";
 
-    public static QueryWordDialog newInstance(String word) {
-        QueryWordDialog dialog = new QueryWordDialog();
+    public static ControlsDialog newInstance(String word) {
+        ControlsDialog dialog = new ControlsDialog();
         Bundle args = new Bundle();
         args.putString(WORD, word);
         dialog.setArguments(args);
         return dialog;
     }
 
-
+    // 传入的单词
     private String word;
 
-    private MediaPlayer mediaPlayer;
-
+    // 发音的 url 地址
     private String audioUrl;
 
+    // 错误信息
+    private TextView msgView;
+    // 单词内容
+    private TextView contentView;
+    // 音标
+    private TextView pronunciationView;
+    // 释义
+    private TextView definitionView;
+    // 播放按钮
+    private ImageButton audioButton;
 
+    private MediaPlayer mMediaPlayer;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         word = getArguments().getString(WORD);
-
+        mMediaPlayer = new MediaPlayer();
     }
-
-
-    private TextView msgView;
-
-    private TextView contentView;
-
-    private TextView pronunciationView;
-
-    private TextView definitionView;
-
-    private ImageButton audioButton;
-
-
-
 
     @Override
     protected View createView(LayoutInflater inflater, ViewGroup container) {
-
-        View view = inflater.inflate(R.layout.dialog_query_word, container, false);
-
-        msgView = findView(view, R.id.word_msg);
-        contentView = findView(view, R.id.word_content);
-        pronunciationView = findView(view, R.id.word_pronunciation);
-        definitionView = findView(view, R.id.word_definition);
-        audioButton = findView(view, R.id.word_audio);
+        View view = inflater.inflate(R.layout.dialog_controls, container, false);
+        msgView = (TextView) view.findViewById(R.id.word_msg);
+        contentView = (TextView) view.findViewById(R.id.word_content);
+        pronunciationView = (TextView) view.findViewById(R.id.word_pronunciation);
+        definitionView = (TextView) view.findViewById(R.id.word_definition);
+        audioButton = (ImageButton) view.findViewById(R.id.word_audio);
         audioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 playAudio();
             }
         });
-
-        findView(view, R.id.word_close).setOnClickListener(new View.OnClickListener() {
+        // 点击关闭 dialog
+        view.findViewById(R.id.word_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
@@ -97,47 +93,24 @@ public class QueryWordDialog extends BottomDialog {
         return view;
     }
 
-
-    private <T extends View> T findView(View view, @IdRes int id) {
-        return (T) view.findViewById(id);
-    }
-
-
-
-
-    private void playAudio() {
-
-        if (audioUrl == null) {
-            return;
-        }
-
-        try {
-            if (mediaPlayer == null) {
-                mediaPlayer = new MediaPlayer();
-                mediaPlayer.setDataSource(audioUrl);
-                mediaPlayer.prepare();
-            }
-            mediaPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-
+    /**
+     *  显示单词信息
+     */
     private void showWordInfo() {
-
-        RetrofitManager.getWordRetrofit().create(WordApi.class)
+        new Retrofit.Builder().baseUrl(WordApi.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build().create(WordApi.class)
                 .rxQueryWord(word)
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Function<WordInfo, ObservableSource<WordInfo.Data>>() {
                     @Override
                     public ObservableSource<WordInfo.Data> apply(@NonNull WordInfo wordInfo) throws Exception {
-
+                        // 若请求成功，发射单词查询数据
                         if ("SUCCESS".equals(wordInfo.getMsg())) {
                             return Observable.just(wordInfo.getData());
                         }
+                        // 若请求失败，发射错误信息
                         return Observable.error(new Throwable(wordInfo.getMsg()));
                     }
                 })
@@ -159,19 +132,36 @@ public class QueryWordDialog extends BottomDialog {
                 });
     }
 
+    // 记录 mediaPlayer 是否已设置了 DataSource
+    private boolean hasSource;
 
+    /**
+     *  播放单词发音
+     */
+    private void playAudio() {
+        if (audioUrl == null) {
+            return;
+        }
+        try {
+            if (!hasSource) {
+                mMediaPlayer.setDataSource(audioUrl);
+                mMediaPlayer.prepare();
+                hasSource = true;
+            }
+            mMediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer != null) {
-
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-            }
-
-            mediaPlayer.release();
-            mediaPlayer = null;
+        // 回收 mediaPlayer 资源
+        if (mMediaPlayer.isPlaying()) {
+            mMediaPlayer.stop();
         }
+        mMediaPlayer.release();
+        mMediaPlayer = null;
     }
 }

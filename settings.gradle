@@ -1,1 +1,1 @@
-include ':app', ':customcontrols', ':loadimage'
+include ':app', ':loadimage', ':customcontrols'

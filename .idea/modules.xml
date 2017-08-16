@@ -5,6 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/ShanbayWork.iml" filepath="$PROJECT_DIR$/ShanbayWork.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/customcontrols/customcontrols.iml" filepath="$PROJECT_DIR$/customcontrols/customcontrols.iml" />
+      <module fileurl="file://$PROJECT_DIR$/customcontrols/customcontrols.iml" filepath="$PROJECT_DIR$/customcontrols/customcontrols.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loadimage/loadimage.iml" filepath="$PROJECT_DIR$/loadimage/loadimage.iml" />
       <module fileurl="file://$PROJECT_DIR$/loadimage/loadimage.iml" filepath="$PROJECT_DIR$/loadimage/loadimage.iml" />
     </modules>
   </component>

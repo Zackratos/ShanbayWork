@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import org.zackratos.shanbaywork.customcontrols.DialogActivity;
-import org.zackratos.shanbaywork.customcontrols.ViewActivity;
+import org.zackratos.shanbaywork.customcontrols.ControlsActivity;
 import org.zackratos.shanbaywork.loadimage.ImageActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "ImageActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,24 +19,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void customDialog(View view) {
-        enter(DialogActivity.newIntent(this));
+        startActivity(new Intent(this, ControlsActivity.class));
     }
 
     public void customView(View view) {
-        enter(ViewActivity.newIntent(this));
     }
 
     public void loadImage(View view) {
-//        enter(ImageActivity.newIntent(this));
         startActivity(ImageActivity.newIntent(this));
     }
 
-    /**
-     *
-     * @param intent
-     */
-    private void enter(Intent intent) {
-        startActivity(intent);
-    }
 
 }
